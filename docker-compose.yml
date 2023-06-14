@@ -12,5 +12,5 @@ services:
   sphinx:
     image: sphinxdoc/sphinx
     volumes:
-      - ./.:/docs
+      - ./Users/magic/PycharmProjects/mydocs:/docs
     restart: always
