@@ -1,3 +1,5 @@
+# Конфигурация контейнеров
+
 version: '3'
 services:
   jenkins:
@@ -8,9 +10,16 @@ services:
       - ./jenkins_home:/var/jenkins_home
     depends_on:
       - sphinx
+    restart: unless-stopped
 
   sphinx:
     image: sphinxdoc/sphinx
     volumes:
-      - /Users/magic/PycharmProjects/mydocs:/docs
-    restart: always
+      - ./.:/docs
+
+  site_documentation:
+    image: nginx
+    ports:
+      - 8000:80
+    volumes:
+      - ./build/html:/usr/share/nginx/html

@@ -1,5 +1,3 @@
 # Зависимости Sphinx
 
-Sphinx             # Основная зависимость для генерации документации с использованием Sphinx
-sphinx-rtd-theme   # Тема оформления "Read the Docs" для Sphinx
 
