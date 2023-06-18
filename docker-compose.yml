@@ -1,5 +1,3 @@
-# Конфигурация контейнеров
-
 version: '3'
 services:
   jenkins:
@@ -8,14 +6,13 @@ services:
       - 8080:8080
     volumes:
       - ./jenkins_home:/var/jenkins_home
-    depends_on:
-      - sphinx
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
   sphinx:
-    image: sphinxdoc/sphinx
+    image: sphinxdoc/sphinx:4.1.2
     volumes:
-      - ./.:/docs
+      - .:/docs
 
   site_documentation:
     image: nginx
