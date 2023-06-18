@@ -1,3 +1,7 @@
 # Зависимости Sphinx
 
+sphinx==3.5.4
+jinja2
+
+
 
