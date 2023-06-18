@@ -1,7 +1,6 @@
 # Зависимости Sphinx
 
 sphinx==3.5.4
-Django==3.2.4
 
 
 
