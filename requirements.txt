@@ -1,4 +1,4 @@
-# Зависимости Sphinx
+# Зависимости Sphinx (связано с docker-compose.yml)
 
 sphinx==3.5.4
 jinja2
