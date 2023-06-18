@@ -16,7 +16,9 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'make html'
+                dir('.') {
+                    sh 'make html'
+                }
             }
         }
     }
