@@ -23,8 +23,11 @@ pipeline {
 
     post {
         always {
-            sh 'cp -r build/html/* /var/www/html'
+            script {
+                docker.image('nginx').inside {
+                    sh 'docker cp build/html/. nginx:/usr/share/nginx/html'
+                }
+            }
         }
     }
 }
-
