@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone repository') {
             steps {
-                git 'https://github.com/techwri/sphinxcourse.git'
+                git branch: 'develop', url: 'https://github.com/techwri/sphinxcourse.git'
             }
         }
 
@@ -16,9 +16,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('.') {
-                    sh 'make html'
-                }
+                sh 'make html'
             }
         }
     }
@@ -29,3 +27,4 @@ pipeline {
         }
     }
 }
+
