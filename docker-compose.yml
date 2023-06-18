@@ -10,7 +10,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/apt/lists:/var/lib/apt/lists
     restart: unless-stopped
-    entrypoint: /bin/bash -c "apt-get update && apt-get install -y python3-pip make && pip3 install -r /var/jenkins_home/requirements.txt && /usr/local/bin/jenkins.sh"
+    entrypoint: /usr/local/bin/jenkins.sh
 
   site_documentation:
     image: nginx
