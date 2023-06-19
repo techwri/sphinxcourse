@@ -1,33 +1,30 @@
 pipeline {
-    agent any
+  agent {
+    docker {
+      image 'python:3'
+      args '-v /var/run/docker.sock:/var/run/docker.sock'
+    }
+  }
 
-    stages {
-        stage('Clone repository') {
-            steps {
-                git branch: 'develop', url: 'https://github.com/techwri/sphinxcourse.git'
-            }
-        }
-
-        stage('Install dependencies') {
-            steps {
-                sh 'pip3 install -r requirements.txt'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'make html'
-            }
-        }
+  stages {
+    stage('Build') {
+      steps {
+        sh 'pip install --upgrade pip'
+        sh 'pip install sphinx sphinx_rtd_theme'
+        sh 'make html -C ./build'
+      }
     }
 
-    post {
-        always {
-            script {
-                docker.image('nginx').inside {
-                    sh 'cp -r build/html/* /usr/share/nginx/html'
-                }
-            }
-        }
+    stage('Publish') {
+      steps {
+        sh 'docker-compose up -d site_documentation'
+      }
     }
+  }
+
+  post {
+    always {
+      sh 'docker-compose down'
+    }
+  }
 }
