@@ -1,4 +1,4 @@
-     pipeline {
+pipeline {
     agent any
 
     stages {
@@ -25,7 +25,7 @@
         always {
             script {
                 docker.image('nginx').inside {
-                    sh 'docker cp build/html/. nginx:/usr/share/nginx/html'
+                    sh 'cp -r build/html/* /usr/share/nginx/html'
                 }
             }
         }
