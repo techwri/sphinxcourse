@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout()
+    }
+
     stages {
         stage('Clone repository') {
             steps {
@@ -19,6 +23,14 @@ pipeline {
                 sh 'make html'
             }
         }
+
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    docker.image('nginx').run('-p 8000:80 -d')
+                }
+            }
+        }
     }
 
     post {
@@ -27,6 +39,7 @@ pipeline {
                 docker.image('nginx').inside {
                     sh 'cp -r build/html/* /usr/share/nginx/html'
                 }
+                docker.image('nginx').stop()
             }
         }
     }
