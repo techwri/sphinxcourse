@@ -1,17 +1,12 @@
 pipeline {
-  agent {
-    docker {
-      image 'python:3'
-      args '-v /var/run/docker.sock:/var/run/docker.sock'
-    }
-  }
+  agent any
 
   stages {
     stage('Build') {
       steps {
-        sh 'pip install --upgrade pip'
-        sh 'pip install sphinx sphinx_rtd_theme'
-        sh 'make html -C ./build'
+        sh 'docker run --rm -v $PWD:/docs -w /docs python:3 pip install --upgrade pip'
+        sh 'docker run --rm -v $PWD:/docs -w /docs python:3 pip install sphinx sphinx_rtd_theme'
+        sh 'docker run --rm -v $PWD:/docs -w /docs python:3 make html -C build'
       }
     }
 
