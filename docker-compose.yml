@@ -6,7 +6,7 @@ services:
       - 8080:8080
     user: root
     volumes:
-      - ./jenkins_home:/var/jenkins_home
+      - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/apt/lists:/var/lib/apt/lists
     restart: unless-stopped
@@ -17,4 +17,8 @@ services:
     ports:
       - 8000:80
     volumes:
+      - jenkins_home:/jenkins_data
       - ./build/html:/usr/share/nginx/html
+
+volumes:
+  jenkins_home:
