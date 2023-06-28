@@ -5,13 +5,3 @@ USER root
 RUN apt-get update && apt-get install -y python3-pip
 
 USER jenkins
-
-FROM docker:latest
-
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash
-
-# Установка Docker внутри контейнера
-RUN apk add --no-cache docker
-
-CMD ["/bin/bash"]

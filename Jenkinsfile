@@ -27,19 +27,17 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    docker.image('nginx').run('-p 8000:80 -d')
+                    docker.withRegistry('') {
+                        def container = docker.image('nginx').run('-p 8000:80 -d')
+                        // Ваш код, выполняемый внутри контейнера
+                        // Пример: копирование документации в контейнер
+                        container.inside {
+                            sh 'cp -r /var/jenkins_home/workspace/docsbuild/build/html/* /usr/share/nginx/html'
+                        }
+                        // Остановка контейнера
+                        container.stop()
+                    }
                 }
-            }
-        }
-    }
-
-    post {
-        always {
-            script {
-                docker.image('nginx').inside {
-                    sh 'cp -r build/html/* /usr/share/nginx/html'
-                }
-                docker.image('nginx').stop()
             }
         }
     }
