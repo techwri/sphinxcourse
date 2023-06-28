@@ -20,5 +20,10 @@ services:
       - jenkins_home:/jenkins_data
       - ./build/html:/usr/share/nginx/html
 
+  docker:
+    image: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   jenkins_home:
