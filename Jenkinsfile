@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     docker.image('nginx').run('-p', '8000:80', '-d').inside {
-                        sh 'cp -r /var/jenkins_home/workspace/docsbuild/build/html/* /usr/share/nginx/html'
+                        sh 'cp -r /var/jenkins_home/workspace/docsbuild/build/html/* /var/jenkins_data/html'
                     }
                 }
             }
