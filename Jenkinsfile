@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    options {
-        skipDefaultCheckout()
-    }
-
     stages {
         stage('Clone repository') {
             steps {
@@ -18,37 +14,20 @@ pipeline {
             }
         }
 
-        stage('Build HTML') {
+        stage('Build Html') {
             steps {
                 sh 'make html'
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                    script {
-                        def containerId = ''
-                        def dockerImage = 'nginx'
-                        def containerName = 'my-container'
-
-                        try {
-                            containerId = docker.image(dockerImage).run("-p", "8000:80", "-d", "--name", containerName)
-
-                            sh 'docker cp /var/jenkins_home/workspace/docsbuild/build/html/. ${containerId}:/var/www/html'
-                        } finally {
-                            sh "docker stop ${containerId}"
-                            sh "docker rm ${containerId}"
-                        }
-                    }
-                }
             }
         }
     }
 
     post {
         always {
-            cleanWs()
+            script {
+                docker.image('nginx').inside {
+                    sh 'cp -r build/html/* /usr/share/nginx/html'
+                }
+            }
         }
     }
 }
