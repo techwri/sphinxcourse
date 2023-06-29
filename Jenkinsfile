@@ -1,5 +1,3 @@
-import jenkins.plugins.docker.workflow.*
-
 pipeline {
     agent any
 
@@ -30,12 +28,17 @@ pipeline {
             steps {
                 catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                     script {
-                        import jenkins.plugins.docker.workflow.*
+                        def containerId = ''
+                        def dockerImage = 'nginx'
+                        def containerName = 'my-container'
 
-                        def dockerImage = docker.image('nginx').pull()
-                        def container = dockerImage.run('-p', '8000:80', '-d')
-                        container.inside {
-                            sh 'cp -r /var/jenkins_home/workspace/docsbuild/build/html/* /var/jenkins_data/html'
+                        try {
+                            containerId = docker.image(dockerImage).run("-p", "8000:80", "-d", "--name", containerName)
+
+                            sh 'docker cp /var/jenkins_home/workspace/docsbuild/build/html/. ${containerId}:/var/www/html'
+                        } finally {
+                            sh "docker stop ${containerId}"
+                            sh "docker rm ${containerId}"
                         }
                     }
                 }
