@@ -1,3 +1,5 @@
+import jenkins.plugins.docker.workflow.*
+
 pipeline {
     agent any
 
@@ -28,7 +30,9 @@ pipeline {
             steps {
                 catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                     script {
-                        def dockerImage = docker.image('nginx')
+                        import jenkins.plugins.docker.workflow.*
+
+                        def dockerImage = docker.image('nginx').pull()
                         def container = dockerImage.run('-p', '8000:80', '-d')
                         container.inside {
                             sh 'cp -r /var/jenkins_home/workspace/docsbuild/build/html/* /var/jenkins_data/html'
