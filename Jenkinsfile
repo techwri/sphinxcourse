@@ -31,7 +31,8 @@ pipeline {
         always {
             script {
                 docker.image('nginx').inside {
-                    sh 'docker cp /jenkins_data/workspace/docsbuild/build/html/. 0a58034cd50a:/usr/share/nginx/html'
+                    sh 'cp -r
+                    /jenkins_data/workspace/docsbuild/build/html/* /usr/share/nginx/html/'
                     sh 'ls -al /usr/share/nginx/html'
                 }
             }
