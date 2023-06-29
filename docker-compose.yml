@@ -10,7 +10,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/apt/lists:/var/lib/apt/lists
     restart: unless-stopped
-    entrypoint: /bin/bash -c "apt-get update && apt-get install -y python3-pip make && pip3 install --upgrade pip && /usr/local/bin/jenkins.sh"
+    entrypoint: /bin/bash -c "apt-get update && apt-get install -y python3-pip make && pip3 install --upgrade pip && apt-get install -y docker.io && /usr/local/bin/jenkins.sh"
 
   site_documentation:
     image: nginx
@@ -18,7 +18,7 @@ services:
       - 8000:80
     volumes:
       - jenkins_home:/jenkins_data
-      - ./build/html:/usr/share/nginx/html
+      - /var/jenkins_home/workspace/docsbuild/build/html:/usr/share/nginx/html
 
 volumes:
   jenkins_home:
