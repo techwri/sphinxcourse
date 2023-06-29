@@ -26,6 +26,7 @@ pipeline {
                 sh 'make html'  // замените на команду генерации документации
             }
         }
+    }
 
     post {
         always {
