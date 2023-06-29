@@ -18,7 +18,7 @@ pipeline {
             }
         }
 
-        stage('Build Html') {
+        stage('Build HTML') {
             steps {
                 sh 'make html'
             }
@@ -26,12 +26,22 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                script {
-                    docker.image('nginx').run('-p', '8000:80', '-d').inside {
-                        sh 'cp -r /var/jenkins_home/workspace/docsbuild/build/html/* /var/jenkins_data/html'
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    script {
+                        def dockerImage = docker.image('nginx')
+                        def container = dockerImage.run('-p', '8000:80', '-d')
+                        container.inside {
+                            sh 'cp -r /var/jenkins_home/workspace/docsbuild/build/html/* /var/jenkins_data/html'
+                        }
                     }
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
