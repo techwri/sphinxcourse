@@ -21,6 +21,12 @@ pipeline {
         }
     }
 
+        stage('Generate Documentation') {
+            steps {
+                sh 'make html'  // замените на команду генерации документации
+            }
+        }
+
     post {
         always {
             script {
