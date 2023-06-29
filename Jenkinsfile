@@ -19,7 +19,6 @@ pipeline {
                 sh 'make html'
             }
         }
-    }
 
         stage('Generate Documentation') {
             steps {
