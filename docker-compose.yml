@@ -18,7 +18,8 @@ services:
       - 8000:80
     volumes:
       - jenkins_home:/jenkins_data
-      - /var/jenkins_home/workspace/docsbuild/build/html:/usr/share/nginx/html
+      - nginx_html:/usr/share/nginx/html
 
 volumes:
   jenkins_home:
+  nginx_html:
