@@ -32,7 +32,7 @@ pipeline {
             script {
                 docker.image('nginx').inside('-v /usr/share/nginx/html:/usr/share/nginx/html') {
                     sh 'chmod -R 777 /usr/share/nginx/html'
-                    sh 'cp -r /jenkins_data/workspace/docsbuild/build/html/* /usr/share/nginx/html'
+                    sh 'cp -r ./jenkins_data/workspace/docsbuild/build/html/* /usr/share/nginx/html'
                     sh 'ls -al /usr/share/nginx/html'
                 }
             }
