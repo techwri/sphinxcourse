@@ -22,7 +22,7 @@ pipeline {
 
         stage('Generate Documentation') {
             steps {
-                sh 'make html'  // замените на команду генерации документации
+                sh 'make html'
             }
         }
     }
@@ -31,7 +31,7 @@ pipeline {
         always {
             script {
                 docker.image('nginx').inside('-v /usr/share/nginx/html:/usr/share/nginx/html') {
-                    sh 'chmod -R 777 /usr/share/nginx/html'  // Установка прав доступа
+                    sh 'chmod -R 777 /usr/share/nginx/html'
                     sh 'cp -r /var/jenkins_home/workspace/docsbuild/build/html/* /usr/share/nginx/html'
                     sh 'ls -al /usr/share/nginx/html'
                 }
