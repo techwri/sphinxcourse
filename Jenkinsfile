@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-        stage('Build Html') {
+        stage('Build HTML') {
             steps {
                 sh 'make html'
             }
@@ -31,6 +31,7 @@ pipeline {
         always {
             script {
                 docker.image('nginx').inside {
+                    sh 'chmod -R 777 /usr/share/nginx/html'  // Установка прав доступа
                     sh 'cp -r /var/jenkins_home/workspace/docsbuild/build/html/* /usr/share/nginx/html'
                     sh 'ls -al /usr/share/nginx/html'
                 }
